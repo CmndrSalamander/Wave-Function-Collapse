@@ -16,7 +16,7 @@ Straight out of quantum mechanics, Wave Function Collapse is an algorithm for pr
 
 ### Corrections
 
-- [ ] Additional Rules for tiles 4 and 5
+- [x] Additional Rules for tiles 4 and 5
 
 ### Next Steps and Refactoring
 

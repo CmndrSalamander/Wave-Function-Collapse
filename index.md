@@ -1,4 +1,3 @@
-<!-- index.markdown -->
 ---
 
 layout: home

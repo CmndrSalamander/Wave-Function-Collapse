@@ -14,3 +14,37 @@ I'm using this website to track my projects and progress as I experiment with th
 
 You can find the sources of this project
 [here](https://github.com/CmndrSalamander/Wave-Function_Collapse).
+
+title: Wave Function Collapse Exploration
+description: >- # this means to ignore newlines until "baseurl:"
+  This project wil track my progress as I experiment with the Wave Function Collapse Algorithm.
+baseurl: '/Wave-Function-Collapse' # the subpath of your site, e.g. /blog
+url: 'https://CmndrSalamander.github.io' # the base hostname & protocol for your site, e.g. http://example.com
+github_username: CmndrSalamander
+
+permalink: /:collection/:year-:month-:day-:title:output_ext
+show_excerpts: true
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+# Exclude from processing.
+# The following items will not be processed, by default.
+# Any item listed under the `exclude:` key here will be automatically added to
+# the internal "default list".
+#
+# Excluded items can be processed by explicitly listing the directories or
+# their entries' file path in the `include:` list.
+#
+# exclude:
+#   - .sass-cache/
+#   - .jekyll-cache/
+#   - gemfiles/
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules/
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/

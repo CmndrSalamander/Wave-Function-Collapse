@@ -13,4 +13,4 @@ Welcome to my blog!
 I'm using this website to track my projects and progress as I experiment with the Wave Function Collapse Algorithm.
 
 You can find the sources of this project
-[here](https://github.com/CmndrSalamander/Wave-Function-Collapse).
+[here](https://github.com/Sidhant-Roymoulik/Wave-Function-Collapse).

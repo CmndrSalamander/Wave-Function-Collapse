@@ -6,7 +6,7 @@ title: ''
 
 ---
 
-# Wave Funciton Collapse Blog
+# Wave Function Collapse Blog
 
 Welcome to my blog!
 

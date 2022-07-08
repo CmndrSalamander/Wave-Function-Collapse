@@ -5,7 +5,7 @@ function reverseString(s) {
 }
 
 function compareEdge(a, b) {
-  return a == reverseString(b);
+  return a === b;
 }
 
 class Tile {
@@ -25,9 +25,27 @@ class Tile {
   analyze(tiles) {
     for (let i = 0; i < tiles.length; i++) {
       let tile = tiles[i];
+      
+      if (tile.index == 2 && this.index == 2) continue;
+      if (tile.index == 2 && this.index == 8) continue;
+      if (tile.index == 2 && this.index == 12) continue;
+      
+      // if (tile.index == 4 && this.index == 4) continue;
 
-      // Tile 5 can't match itself
       if (tile.index == 5 && this.index == 5) continue;
+      
+      if (tile.index == 8 && this.index == 2) continue;
+      if (tile.index == 8 && this.index == 8) continue;
+      if (tile.index == 8 && this.index == 12) continue;
+      
+      if (tile.index == 9 && this.index == 9) continue;
+      
+      if (tile.index == 11 && this.index == 11) continue;
+      
+      if (tile.index == 12 && this.index == 2) continue;
+      if (tile.index == 12 && this.index == 8) continue;
+      if (tile.index == 12 && this.index == 12) continue;
+      
 
       // UP
       if (compareEdge(tile.edges[2], this.edges[0])) {
@@ -59,9 +77,16 @@ class Tile {
 
     const newEdges = [];
     const len = this.edges.length;
-    for (let i = 0; i < len; i++) {
+    for(let i = 0; i < len; i++) {
       newEdges[i] = this.edges[(i - num + len) % len];
     }
+    for(let i = 0; i < num; i++) {
+      newEdges[i] = reverseString(newEdges[i]);
+    }
+    for(let i = 0; i < num; i++) {
+      newEdges[(i+2)%len] = reverseString(newEdges[(i+2)%len]);
+    }
+    
     return new Tile(newImg, newEdges, this.index);
   }
 }

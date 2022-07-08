@@ -2,16 +2,12 @@ let tiles = [];
 const tileImages = [];
 
 let grid = [];
+let path = [];
 
-const DIM = 25;
+const DIM = 32;
 
 function preload() {
-  // const path = 'rail';
-  // for (let i = 0; i < 7; i++) {
-  //   tileImages[i] = loadImage(`${path}/tile${i}.png`);
-  // }
-
-  const path = 'tiles/circuit-coding-train';
+  const path = 'tiles/circuit';
   for (let i = 0; i < 13; i++) {
     tileImages[i] = loadImage(`${path}/${i}.png`);
   }
@@ -27,24 +23,18 @@ function removeDuplicatedTiles(tiles) {
 }
 
 function setup() {
-  createCanvas(400, 400);
-  //randomSeed(15);
-
-  // tiles[0] = new Tile(tileImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
-  // tiles[1] = new Tile(tileImages[1], ['ABA', 'ABA', 'ABA', 'AAA']);
-  // tiles[2] = new Tile(tileImages[2], ['BAA', 'AAB', 'AAA', 'AAA']);
-  // tiles[3] = new Tile(tileImages[3], ['BAA', 'AAA', 'AAB', 'AAA']);
-  // tiles[4] = new Tile(tileImages[4], ['ABA', 'ABA', 'AAA', 'AAA']);
-  // tiles[5] = new Tile(tileImages[5], ['ABA', 'AAA', 'ABA', 'AAA']);
-  // tiles[6] = new Tile(tileImages[6], ['ABA', 'ABA', 'ABA', 'ABA']);
+  createCanvas(500, 500);
+  
+  const w = width / DIM;
+  const h = height / DIM;
 
   // Loaded and created the tiles
   tiles[0] = new Tile(tileImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
   tiles[1] = new Tile(tileImages[1], ['BBB', 'BBB', 'BBB', 'BBB']);
   tiles[2] = new Tile(tileImages[2], ['BBB', 'BCB', 'BBB', 'BBB']);
   tiles[3] = new Tile(tileImages[3], ['BBB', 'BDB', 'BBB', 'BDB']);
-  tiles[4] = new Tile(tileImages[4], ['ABB', 'BCB', 'BBA', 'AAA']);
-  tiles[5] = new Tile(tileImages[5], ['ABB', 'BBB', 'BBB', 'BBA']);
+  tiles[4] = new Tile(tileImages[4], ['ABB', 'BCB', 'ABB', 'AAA']);
+  tiles[5] = new Tile(tileImages[5], ['ABB', 'BBB', 'BBB', 'ABB']);
   tiles[6] = new Tile(tileImages[6], ['BBB', 'BCB', 'BBB', 'BCB']);
   tiles[7] = new Tile(tileImages[7], ['BDB', 'BCB', 'BDB', 'BCB']);
   tiles[8] = new Tile(tileImages[8], ['BDB', 'BBB', 'BCB', 'BBB']);
@@ -53,7 +43,7 @@ function setup() {
   tiles[11] = new Tile(tileImages[11], ['BCB', 'BCB', 'BBB', 'BBB']);
   tiles[12] = new Tile(tileImages[12], ['BBB', 'BCB', 'BBB', 'BCB']);
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 13; i++) {
     tiles[i].index = i;
   }
 
@@ -77,84 +67,41 @@ function setup() {
   startOver();
 }
 
-function startOver() {
-  // Create cell for each spot on the grid
-  for (let i = 0; i < DIM * DIM; i++) {
-    grid[i] = new Cell(tiles.length);
+function startCondition_Border() {
+  // Making border
+  // Top
+  for(let i = 0; i < DIM; i++) {
+    grid[i].collapsed = true;
+    grid[i].options = [1];
+  }
+  // Right
+  for(let i = 0; i < DIM; i++) {
+    grid[DIM-1 + DIM*i].collapsed = true;
+    grid[DIM-1 + DIM*i].options = [1];
+  }
+  // Bottom
+  for(let i = 0; i < DIM; i++) {
+    grid[DIM*(DIM-1) + i].collapsed = true;
+    grid[DIM*(DIM-1) + i].options = [1];
+  }
+  // Left
+  for(let i = 0; i < DIM; i++) {
+    grid[DIM*i].collapsed = true;
+    grid[DIM*i].options = [1];
   }
 }
 
-function checkValid(arr, valid) {
-  //console.log(arr, valid);
-  for (let i = arr.length - 1; i >= 0; i--) {
-    // VALID: [BLANK, RIGHT]
-    // ARR: [BLANK, UP, RIGHT, DOWN, LEFT]
-    // result in removing UP, DOWN, LEFT
-    let element = arr[i];
-    // console.log(element, valid.includes(element));
-    if (!valid.includes(element)) {
-      arr.splice(i, 1);
+function startCondition_centerChip() {
+  let size = 2;
+  for(let i = int(DIM/2 - size/2); i < int(DIM/2 + (size+1)/2); i++) {
+    for(let j = int(DIM/2 - size/2); j < int(DIM/2 + (size+1)/2); j++) {
+      grid[DIM*i + j].collapsed = true;
+      grid[DIM*i + j].options = [0];
     }
   }
-  // console.log(arr);
-  // console.log("----------");
 }
 
-function mousePressed() {
-  redraw();
-}
-
-function draw() {
-  background(0);
-
-  const w = width / DIM;
-  const h = height / DIM;
-  for (let j = 0; j < DIM; j++) {
-    for (let i = 0; i < DIM; i++) {
-      let cell = grid[i + j * DIM];
-      if (cell.collapsed) {
-        let index = cell.options[0];
-        image(tiles[index].img, i * w, j * h, w, h);
-      } else {
-        noFill();
-        stroke(51);
-        rect(i * w, j * h, w, h);
-      }
-    }
-  }
-
-  // Pick cell with least entropy
-  let gridCopy = grid.slice();
-  gridCopy = gridCopy.filter((a) => !a.collapsed);
-  // console.table(grid);
-  // console.table(gridCopy);
-
-  if (gridCopy.length == 0) {
-    return;
-  }
-  gridCopy.sort((a, b) => {
-    return a.options.length - b.options.length;
-  });
-
-  let len = gridCopy[0].options.length;
-  let stopIndex = 0;
-  for (let i = 1; i < gridCopy.length; i++) {
-    if (gridCopy[i].options.length > len) {
-      stopIndex = i;
-      break;
-    }
-  }
-
-  if (stopIndex > 0) gridCopy.splice(stopIndex);
-  const cell = random(gridCopy);
-  cell.collapsed = true;
-  const pick = random(cell.options);
-  if (pick === undefined) {
-    startOver();
-    return;
-  }
-  cell.options = [pick];
-
+function NextGrid(grid, w, h) {
   const nextGrid = [];
   for (let j = 0; j < DIM; j++) {
     for (let i = 0; i < DIM; i++) {
@@ -203,12 +150,107 @@ function draw() {
           }
           checkValid(options, validOptions);
         }
-
+        
+        
         // I could immediately collapse if only one option left?
-        nextGrid[index] = new Cell(options);
+        nextGrid[index] = new Cell(options, index);
+        if(options.length == 1) {
+          nextGrid[index].collapse();
+        }
+        
+        let entropy = (options.length/tiles.length)**2;
+        fill(min(510*(entropy), 255), min(510*(1-entropy), 255), 0);
+        rect(i * w, j * h, w, h);
       }
     }
   }
+  return nextGrid;
+}
 
-  grid = nextGrid;
+function startOver() {
+  // Create cell for each spot on the grid
+  for (let i = 0; i < DIM * DIM; i++) {
+    grid[i] = new Cell(tiles.length, i);
+  }
+  
+  startCondition_Border();
+  startCondition_centerChip();
+}
+
+function checkValid(arr, valid) {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    let element = arr[i];
+    if (!valid.includes(element)) {
+      arr.splice(i, 1);
+    }
+  }
+}
+
+function mousePressed() {
+  redraw();
+}
+
+function draw() {
+  background(0);
+  
+  const w = width / DIM;
+  const h = height / DIM;
+
+  for (let j = 0; j < DIM; j++) {
+    for (let i = 0; i < DIM; i++) {
+      let cell = grid[i + j * DIM];
+      if (cell.collapsed) {
+        let index = cell.options[0];
+        image(tiles[index].img, i * w, j * h, w, h);
+      } else {
+        noFill();
+        stroke(51);
+        rect(i * w, j * h, w, h);
+      }
+    }
+  }
+  
+  grid = NextGrid(grid, w, h);
+  
+  // Pick cell with least entropy
+  let gridCopy = grid.slice();
+  gridCopy = gridCopy.filter((a) => !a.collapsed);
+
+  if (gridCopy.length == 0) {
+    return;
+  }
+  gridCopy.sort((a, b) => {
+    return a.options.length - b.options.length;
+  });
+
+  let len = gridCopy[0].options.length;
+  let stopIndex = 0;
+  for (let i = 1; i < gridCopy.length; i++) {
+    if (gridCopy[i].options.length > len) {
+      stopIndex = i;
+      break;
+    }
+  }
+
+  if (stopIndex > 0) gridCopy.splice(stopIndex);
+  const cell = random(gridCopy);
+  cell.collapse();
+  const pick = random(cell.options);
+  if (pick === undefined) {
+    grid = path[path.length - 2][0];
+    prevCell = path[path.length - 2][1];
+    prevPick = path[path.length - 2][2];
+    prevCell.options.pop(prevCell.options.indexOf(prevPick));
+    prevCell.collapsed = false;
+    path.splice(path.length - 2);
+    return;
+  }
+  path.push([grid, JSON.parse(JSON.stringify(cell)), pick]);
+  cell.options = [pick];
+
+  
+  
+  frameRate(60);
+  // console.log(grid);
+  noLoop();
 }

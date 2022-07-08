@@ -252,5 +252,5 @@ function draw() {
   
   frameRate(60);
   // console.log(grid);
-  noLoop();
+//   noLoop();
 }

@@ -4,6 +4,7 @@ title: Projects
 permalink: /projects/
 ---
 
+---
 {% for repo in site.github.public_repositories %}
 
 {% repo.topics.size > 0 %}
@@ -19,3 +20,4 @@ Last updated: {{ repo.updated_at | date_to_string }}
 {% endif %}
 
 {% endfor %}
+---

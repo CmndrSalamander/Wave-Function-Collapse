@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-I am a sophomore studying Computer Science at The University of Michigan.
+My name is Sidhant Roymoulik. I am a sophomore studying Computer Science at The University of Michigan. You can reach me at sidhant.roymoulik@gmail.com.

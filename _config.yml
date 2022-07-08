@@ -8,6 +8,6 @@ permalink: /:collection/:year-:month-:day-:title:output_ext
 show_excerpts: true
 
 # Build settings
-theme: hyde
+theme: minima
 plugins:
   - jekyll-feed

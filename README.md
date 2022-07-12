@@ -13,6 +13,7 @@ Straight out of quantum mechanics, Wave Function Collapse is an algorithm for pr
 ### Completed
 
 - [x] Implementation of Tile Model (see: https://youtu.be/rI_y2GAlQFM)
+- [x] Recursive entropy reduction
 
 ### Corrections
 
@@ -21,7 +22,6 @@ Straight out of quantum mechanics, Wave Function Collapse is an algorithm for pr
 ### Next Steps and Refactoring
 
 - [ ] Filter out redundant tiles
-- [ ] Recursive entropy reduction
 - [ ] Shannon entropy
 
 ### Future work
